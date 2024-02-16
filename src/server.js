@@ -3,7 +3,7 @@ import express from 'express'
 import {PORT, HOST} from './config.js'
 import userRouter from './routers/userRouter.js'
 import productRouter from './routers/productRouter.js'
-import logger from './middleware/logger.js'
+import logger from './middlewares/logger.js'
 
 const app = express()
 
