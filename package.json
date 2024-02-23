@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Projeto node com express, prisma, zod, no padrão de projeto MVC.",
   "main": "src/server.js",
-  "type":"module",
+  "type": "module",
   "scripts": {
     "start": "node src/server.js",
     "dev": "nodemon src/server.js"
@@ -20,9 +20,11 @@
   "author": "Renan Cavichi",
   "license": "ISC",
   "devDependencies": {
-    "nodemon": "^3.0.3"
+    "nodemon": "^3.0.3",
+    "prisma": "^5.10.2"
   },
   "dependencies": {
+    "@prisma/client": "^5.10.2",
     "express": "^4.18.2"
   }
 }
