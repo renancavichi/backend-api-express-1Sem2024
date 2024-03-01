@@ -7,9 +7,35 @@ const getAll = async () => {
 }
 
 const getById = async (id) => {
-    return await prisma.user.findUnique({where: {
-        id
-    }})
+    return await prisma.user.findUnique({
+        where: {
+            id
+        }
+    })
 }
 
-export default {getAll, getById}
+const create = async (user) => {
+    return await prisma.user.create({
+        data: user
+    })
+}
+
+const remove = async (id) => {
+    return await prisma.user.delete({
+        where: {
+            id
+        }
+    })
+}
+
+const edit = async (user) => {
+    return await prisma.user.update({
+        where: {
+            id: user.id
+        },
+        data: user
+    })
+}
+
+
+export default {getAll, getById, create, remove, edit}
