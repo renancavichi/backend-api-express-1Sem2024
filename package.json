@@ -6,7 +6,9 @@
   "type": "module",
   "scripts": {
     "start": "node src/server.js",
-    "dev": "nodemon src/server.js"
+    "dev": "nodemon src/server.js",
+    "prisma:generate": "npx prisma generate",
+    "prisma:pull": "npx prisma db pull"
   },
   "keywords": [
     "js",
@@ -25,6 +27,8 @@
   },
   "dependencies": {
     "@prisma/client": "^5.10.2",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
     "express": "^4.18.2",
     "zod": "^3.22.4"
   }
