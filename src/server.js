@@ -8,8 +8,6 @@ import cors from 'cors'
 
 const app = express()
 
-
-
 app.use(logger)
 app.use(cors({
   origin: ['http://localhost:3000', 'http://localhost:8081', 'http://meusite.com'],
