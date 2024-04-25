@@ -1,6 +1,7 @@
 //const express = require('express')
 import express from 'express'
 import {PORT, HOST} from './config.js'
+import authRouter from './routers/authRouter.js'
 import userRouter from './routers/userRouter.js'
 import productRouter from './routers/productRouter.js'
 import logger from './middlewares/logger.js'
@@ -16,6 +17,7 @@ app.use(cors({
 }))
 app.use(express.json())
 
+app.use('/auth', authRouter)
 app.use('/user', userRouter)
 app.use('/product', productRouter)
 
