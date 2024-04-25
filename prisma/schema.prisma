@@ -20,5 +20,6 @@ model user {
   id     Int    @id @default(autoincrement())
   name   String @db.VarChar(250)
   email  String @unique(map: "unique-email") @db.VarChar(250)
+  pass   String @db.Text
   avatar String @db.Text
 }
