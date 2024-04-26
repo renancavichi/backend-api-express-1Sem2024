@@ -1,13 +1,20 @@
 import userModel from "../../models/userModel.js"
 
 const update = async (req, res) => {
-    try{
-        const id = +req.params.id
+    try{ 
         const user = req.body
-        const result = await userModel.edit({id, ...user})
+        user.id = +req.params.id
+        const result = userModel.validateUserToUpdate(user)
+        if(!result.success){
+            return res.status(400).json({
+                error: `Dados de Atualização Inválido`,
+                fields: zodErrorFormat(result.error)
+            })
+        }
+        const userEdited = await userModel.edit(user)
         res.json({
-            success: `Usuário ${id} editado com sucesso!`,
-            user: result
+            success: `Usuário ${userEdited.id} editado com sucesso!`,
+            user: userEdited
         })
     } catch (error) {
         console.log(error)
