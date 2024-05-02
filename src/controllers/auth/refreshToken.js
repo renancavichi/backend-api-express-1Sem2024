@@ -1,6 +1,6 @@
 import sessionModel from "../../models/sessionModel.js"
 import userModel from "../../models/userModel.js"
-import { SECRET_KEY } from "../../config.js"
+import { SECRET_KEY, TOKEN_EXPIRES_IN, DB_TOKEN_EXPIRES_DAYS } from "../../config.js"
 import jwt from 'jsonwebtoken'
 
 const refreshToken = async (req, res) => {
@@ -35,7 +35,7 @@ const refreshToken = async (req, res) => {
 
                 //verificar se a data de atualiação é < que 1 dia
                 const now = new Date()
-                now.setDate(now.getDate() - 1)
+                now.setDate(now.getDate() - DB_TOKEN_EXPIRES_DAYS)
 
                 if(session.createdAt < now){
                     //se não for mais valido: remover sessao, limpar o cookie, msg erro
@@ -55,7 +55,7 @@ const refreshToken = async (req, res) => {
                     name: userFound.name
                 },
                 SECRET_KEY, {
-                    expiresIn: '3m' // mudar para 1h 
+                    expiresIn: TOKEN_EXPIRES_IN 
                 })
         
                 //gerar o cookie para web (3 meses) 3 * 30 * 24 * 60 * 60 * 1000
@@ -72,7 +72,16 @@ const refreshToken = async (req, res) => {
                     createdAt: date
                 })
 
-                return res.json({message: "Token atualizado com sucesso!", newToken})
+                return res.json({
+                    message: "Token atualizado com sucesso!",
+                    newToken,
+                    user: {
+                        id: userFound.id,
+                        name: userFound.name,
+                        email: userFound.email,
+                        avatar: userFound.avatar
+                    }
+                })
             }
             return res.status(401).json({ error: 'Token Inválido.', code: 'invalid-token'})
         }

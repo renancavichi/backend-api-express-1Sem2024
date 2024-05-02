@@ -2,7 +2,7 @@ import userModel from '../../models/userModel.js'
 import zodErrorFormat from '../../helpers/zodErrorFormat.js'
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
-import { SECRET_KEY } from '../../config.js'
+import { SECRET_KEY, TOKEN_EXPIRES_IN } from '../../config.js'
 import sessionModel from '../../models/sessionModel.js'
 
 const login = async (req, res) => {
@@ -40,7 +40,7 @@ const login = async (req, res) => {
             name: userFound.name
         },
         SECRET_KEY, {
-            expiresIn: '3m' // mudar para 1h 
+            expiresIn: TOKEN_EXPIRES_IN 
         })
 
         //gerar o cookie para web (3 meses) 3 * 30 * 24 * 60 * 60 * 1000
@@ -55,7 +55,16 @@ const login = async (req, res) => {
             token,
             createdAt: date
         })
-        return res.json({message: "User Logado!", token})
+        return res.json({
+            message: "User Logado!",
+            token,
+            user: {
+                id: userFound.id,
+                name: userFound.name,
+                email: userFound.email,
+                avatar: userFound.avatar
+            }
+        })
     } catch (error) {
         console.log(error)
         return res.status(500).json({
