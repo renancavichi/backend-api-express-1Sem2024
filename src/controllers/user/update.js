@@ -4,6 +4,13 @@ const update = async (req, res) => {
     try{ 
         const user = req.body
         user.id = +req.params.id
+
+        if(user.id !== req.userLogged.id){
+            return res.status(401).json({
+                error: 'não autorizado a atualiar outro usuário!'
+            })
+        }
+
         const result = userModel.validateUserToUpdate(user)
         if(!result.success){
             return res.status(400).json({
