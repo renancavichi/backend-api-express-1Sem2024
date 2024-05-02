@@ -49,14 +49,13 @@ const login = async (req, res) => {
         // fix timezone -3
         let date = new Date();
         date.setHours(date.getHours() - 3)
+
         await sessionModel.create({
             userId: userFound.id,
             token,
             createdAt: date
         })
-
-
-        res.json({message: "User Logado!", token})
+        return res.json({message: "User Logado!", token})
     } catch (error) {
         console.log(error)
         return res.status(500).json({
