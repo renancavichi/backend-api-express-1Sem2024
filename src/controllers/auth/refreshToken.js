@@ -29,7 +29,7 @@ const refreshToken = async (req, res) => {
                 if(!session){
                     res.clearCookie('token', { httpOnly: true, sameSite: 'None', secure: true })
                     return res.status(401).json({
-                        error: 'Sessão não encontrada, faça o login novamente!'
+                        error: 'Sessão não encontrada, faça o login novamente!', code: "logout" 
                     })
                 }
 
@@ -41,13 +41,13 @@ const refreshToken = async (req, res) => {
                     //se não for mais valido: remover sessao, limpar o cookie, msg erro
                     await sessionModel.remove(session.userId, token)
                     res.clearCookie('token', { httpOnly: true, sameSite: 'None', secure: true })
-                    return res.status(401).json({ error: 'Sessão expirada, faça o login novamente!'})
+                    return res.status(401).json({ error: 'Sessão expirada, faça o login novamente!', code: "logout"})
                 }
             
                 //se verdadeiro gerar novo token, atualizar os dados da sessao, gerar novo cookie
                 const userFound = await userModel.getById(session.userId)
                 if(!userFound){
-                    return res.status(500).json({ error: 'Usuário da sessão não encontrado!'})
+                    return res.status(500).json({ error: 'Usuário da sessão não encontrado!', code: "logout"})
                 }
                
                 const newToken = jwt.sign({ 
@@ -83,7 +83,7 @@ const refreshToken = async (req, res) => {
                     }
                 })
             }
-            return res.status(401).json({ error: 'Token Inválido.', code: 'invalid-token'})
+            return res.status(401).json({ error: 'Token Inválido.', code: 'logout'})
         }
     } catch (error) {
         console.log(error)
